@@ -2,18 +2,21 @@ import { ApolloServer } from "@apollo/server";
 import { typeDefs } from "./typeDefs/index.js";
 import { resolvers } from "./resolvers/index.js";
 import { expressMiddleware } from "@apollo/server/express4";
+import { connectToDB } from "./db/connect.js";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import cors from "cors";
 import http from "http";
 import express from "express";
 import dotenv from "dotenv";
 
-const SERVER_PORT = 3001;
-
 dotenv.config();
 
+const SERVER_PORT = 3001;
 const app = express();
 const httpServer = http.createServer(app);
+
+// Connect to the database before starting the server
+await connectToDB();
 
 const server = new ApolloServer({
   typeDefs,
@@ -23,19 +26,17 @@ const server = new ApolloServer({
 
 await server.start();
 
-// instance before passing the instance to `expressMiddleware`
+// Set up middleware after the server has started
 app.use(
   "/",
   cors(),
   express.json(),
-  // expressMiddleware accepts the same arguments:
-  // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: async ({ req }) => ({ token: req.headers.token }),
   })
 );
 
-// Modified server startup
+// Start the HTTP server after the Apollo Server is set up
 await new Promise((resolve) =>
   httpServer.listen({ port: SERVER_PORT }, resolve)
 );
