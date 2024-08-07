@@ -1,8 +1,9 @@
-import db from "./lib/fakeData.js";
+import { users } from "../lib/data.js";
 
 export const userResolvers = {
   Query: {
-    users: () => db.users,
+    users: async () => users,
+    user: async (_, { userId }) => users.find((user) => user._id === userId),
   },
   Mutation: {},
 };
