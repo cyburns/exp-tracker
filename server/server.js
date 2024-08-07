@@ -3,7 +3,6 @@ import { typeDefs } from "./typeDefs/index.js";
 import { resolvers } from "./resolvers/index.js";
 import { expressMiddleware } from "@apollo/server/express4";
 import { connectToDB } from "./db/connect.js";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import cors from "cors";
 import http from "http";
 import express from "express";
@@ -11,6 +10,7 @@ import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
 import ConnectMongo from "connect-mongodb-session";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
 dotenv.config();
 
@@ -51,7 +51,7 @@ app.use(
   cors(),
   express.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
+    context: async ({ req, res }) => ({ token: req.headers.token, req, res }),
   })
 );
 
