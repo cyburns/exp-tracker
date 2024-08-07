@@ -6,8 +6,11 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import cors from "cors";
 import http from "http";
 import express from "express";
+import dotenv from "dotenv";
 
 const SERVER_PORT = 3001;
+
+dotenv.config();
 
 const app = express();
 const httpServer = http.createServer(app);
