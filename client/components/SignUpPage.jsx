@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+"use client";
+
+import Link from "next/link";
+import React, { useState } from "react";
 import RadioButton from "./RadioButton";
 import InputField from "./InputField";
 
@@ -98,7 +100,7 @@ const SignUpPage = () => {
             <div className="mt-4 text-sm text-gray-600 text-center">
               <p>
                 Already have an account?{" "}
-                <Link to="/login" className="text-black hover:underline">
+                <Link href="/login" className="text-black hover:underline">
                   Login here
                 </Link>
               </p>
