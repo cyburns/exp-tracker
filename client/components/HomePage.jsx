@@ -8,6 +8,8 @@ import { MdLogout } from "react-icons/md";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+
+
 const HomePage = () => {
   const chartData = {
     labels: ["Saving", "Expense", "Investment"],

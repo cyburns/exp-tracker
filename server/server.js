@@ -16,21 +16,18 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 
 dotenv.config();
 
-const SERVER_PORT = 3001;
+const SERVER_PORT = 4000;
 const app = express();
 const httpServer = http.createServer(app);
 
 // Connect to the database before starting the server
 await connectToDB();
-await passportConfig();
 const MongoDBStore = ConnectMongo(session);
 
 const store = new MongoDBStore({
   uri: process.env.MONGO_URI,
   collection: "sessions",
 });
-
-store.on("error", (error) => console.error(error));
 
 const server = new ApolloServer({
   typeDefs,
@@ -43,18 +40,17 @@ const server = new ApolloServer({
   store,
 });
 
-app.use(passport.initialize());
-app.use(passport.session());
+// await passportConfig();
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 await server.start();
 
-// Set up middleware after the server has started
 app.use(
   "/graphql",
   cors({
     origin: "http://localhost:3000",
     credentials: true,
-    preflightContinue: true,
   }),
   express.json(),
   // expressMiddleware accepts the same arguments:
@@ -63,18 +59,6 @@ app.use(
     context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
-
-// Global error handler
-app.use((err, req, res, next) => {
-  const defaultErr = {
-    log: "Express error handler caught unknown middleware",
-    status: 500,
-    message: { err: "An error occurred" },
-  };
-
-  const errorObj = Object.assign({}, defaultErr, err);
-  return res.status(errorObj.status).json(errorObj);
-});
 
 app.use("/*", (_, res) => res.status(404).send("Page not found"));
 
