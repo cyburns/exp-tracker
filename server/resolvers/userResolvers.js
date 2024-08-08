@@ -4,8 +4,25 @@ import User from "../db/models/user.js";
 
 export const userResolvers = {
   Query: {
-    users: async () => users,
-    user: async (_, { userId }) => users.find((user) => user._id === userId),
+    authUser: async (_, __, context) => {
+      try {
+        const user = await context.getUser();
+        return user;
+      } catch (error) {
+        console.error("Error in authUser: ", error);
+        throw new Error("Internal server error");
+      }
+    },
+
+    user: async (_, { userId }) => {
+      try {
+        const user = await User.findById(userId);
+        return user;
+      } catch (error) {
+        console.error("Error in user query:", error);
+        throw new Error(error.message || "Error getting user");
+      }
+    },
   },
 
   Mutation: {
@@ -72,8 +89,8 @@ export const userResolvers = {
       try {
         await context.logout();
 
-        context.req.session.destroy((err) => {
-          if (err) throw err;
+        context.req.session.destroy((error) => {
+          if (error) throw error;
         });
 
         context.res.clearCookie("connect.sid");
