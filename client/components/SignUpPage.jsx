@@ -7,7 +7,7 @@ import InputField from "./InputField";
 import { useMutation } from "@apollo/client";
 import { SIGN_UP } from "@/graphql/mutations/user-mutations";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const SignUpPage = () => {
   const [signUpData, setSignUpData] = useState({
