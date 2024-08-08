@@ -1,9 +1,7 @@
-import Header from "@/components/header";
+import Header from "@/components/Header";
 
 export default function Home() {
-  return (
-    <main>
-      <Header />
-    </main>
-  );
+  const authUser = true;
+
+  return <main>{authUser && <Header />}</main>;
 }
