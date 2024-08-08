@@ -62,7 +62,7 @@ export const userResolvers = {
       }
     },
 
-    login: async (_, { input }, context) => {
+    logIn: async (_, { input }, context) => {
       try {
         const { username, password } = input;
 

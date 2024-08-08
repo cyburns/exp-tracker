@@ -5,10 +5,11 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Cards from "./Cards";
 import TransactionForm from "./TransactionForm";
 import { MdLogout } from "react-icons/md";
+import { useMutation } from "@apollo/client";
+import { LOGOUT } from "@/graphql/mutations/user-mutations";
+import { useRouter } from "next/navigation";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-
-
 
 const HomePage = () => {
   const chartData = {
@@ -35,11 +36,17 @@ const HomePage = () => {
     ],
   };
 
-  const handleLogout = () => {
-    console.log("Logging out...");
-  };
+  const router = useRouter();
+  const [logout, { loading }] = useMutation(LOGOUT);
 
-  const loading = false;
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
