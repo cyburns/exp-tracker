@@ -1,4 +1,3 @@
-import { users } from "../lib/data.js";
 import bcrypt from "bcryptjs";
 import User from "../db/models/user.js";
 
@@ -62,7 +61,7 @@ export const userResolvers = {
       }
     },
 
-    logIn: async (_, { input }, context) => {
+    login: async (_, { input }, context) => {
       try {
         const { username, password } = input;
 

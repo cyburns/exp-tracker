@@ -68,7 +68,7 @@ const HomePage = () => {
           )}
           {/* loading spinner */}
           {loading && (
-            <div className="w-6 h-6 border-t-2 border-b-2 mx-2 rounded-full animate-spin"></div>
+            <div className="w-6 h-6 border-t-2 border-b-2 mx-2 rounded-full animate-spin" />
           )}
         </div>
         <div className="flex flex-wrap w-full justify-center items-center gap-6">
