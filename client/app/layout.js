@@ -3,6 +3,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { Toaster } from "react-hot-toast";
 
 const client = new ApolloClient({
   uri: "http://localhost:4000/graphql",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
       <ApolloProvider client={client}>
         <body className={inter.className}>{children}</body>
       </ApolloProvider>
+      <Toaster />
     </html>
   );
 }
