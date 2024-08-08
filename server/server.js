@@ -82,7 +82,7 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj);
 });
 
-app.use("/*", (req, res) => res.status(404).send("Page not found"));
+app.use("/*", (_, res) => res.status(404).send("Page not found"));
 
 // Start the HTTP server after the Apollo Server is set up
 await new Promise((resolve) =>
