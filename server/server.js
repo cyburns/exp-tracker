@@ -50,23 +50,17 @@ await server.start();
 
 // Set up middleware after the server has started
 app.use(
-  "/",
+  "/graphql",
   cors({
     origin: "http://localhost:3000",
     credentials: true,
+    preflightContinue: true,
   }),
   express.json(),
+  // expressMiddleware accepts the same arguments:
+  // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: async ({ req, res }) => buildContext({ req, res }),
-  })
-);
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store,
   })
 );
 

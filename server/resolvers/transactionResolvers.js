@@ -1,8 +1,7 @@
-import Transaction from "../models/transaction.model.js";
 import User from "../db/models/user.js";
 import Transaction from "../db/models/transaction.js";
 
-const transactionResolver = {
+export const transactionResolver = {
   Query: {
     transactions: async (_, __, context) => {
       try {
@@ -108,5 +107,3 @@ const transactionResolver = {
     },
   },
 };
-
-export default transactionResolver;
