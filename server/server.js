@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
 import ConnectMongo from "connect-mongodb-session";
+import { buildContext } from "graphql-passport";
+import { passportConfig } from "./passport/passport.js";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
 dotenv.config();
@@ -20,6 +22,7 @@ const httpServer = http.createServer(app);
 
 // Connect to the database before starting the server
 await connectToDB();
+await passportConfig();
 const MongoDBStore = ConnectMongo(session);
 
 const store = new MongoDBStore({
@@ -48,10 +51,13 @@ await server.start();
 // Set up middleware after the server has started
 app.use(
   "/",
-  cors(),
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
   express.json(),
   expressMiddleware(server, {
-    context: async ({ req, res }) => ({ token: req.headers.token, req, res }),
+    context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
 
