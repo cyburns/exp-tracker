@@ -9,33 +9,32 @@ export const passportConfig = async () => {
   });
 
   passport.deserializeUser(async (id, done) => {
+    console.log("Deserializing user");
     try {
       const user = await User.findById(id);
       done(null, user);
-    } catch (error) {
-      done(error);
+    } catch (err) {
+      done(err);
     }
   });
+
+  passport.use(
+    new GraphQLLocalStrategy(async (username, password, done) => {
+      try {
+        const user = await User.findOne({ username });
+        if (!user) {
+          throw new Error("Invalid username or password");
+        }
+        const validPassword = bcrypt.compare(password, user.password);
+
+        if (!validPassword) {
+          throw new Error("Invalid username or password");
+        }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err);
+      }
+    })
+  );
 };
-
-passport.use(
-  new GraphQLLocalStrategy(async (username, password, done) => {
-    try {
-      const user = await User.fineOne({ username });
-
-      if (!user) {
-        return done(null, false, { message: "User not found" });
-      }
-
-      const isValid = bcrypt.compare(password, user.password);
-
-      if (!isValid) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-
-      return done(null, user);
-    } catch (error) {
-      return done(error);
-    }
-  })
-);

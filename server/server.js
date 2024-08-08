@@ -16,6 +16,8 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 
 dotenv.config();
 
+await passportConfig();
+
 const SERVER_PORT = 4000;
 const app = express();
 const httpServer = http.createServer(app);
@@ -40,9 +42,16 @@ const server = new ApolloServer({
   store,
 });
 
-// await passportConfig();
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(
+  session({
+    secret: "your-secret-key", // replace with a strong secret
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 await server.start();
 

@@ -7,6 +7,7 @@ import InputField from "./InputField";
 import { useMutation } from "@apollo/client";
 import { SIGN_UP } from "@/graphql/mutations/user-mutations";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const SignUpPage = () => {
   const [signUpData, setSignUpData] = useState({
@@ -17,6 +18,8 @@ const SignUpPage = () => {
   });
 
   const [signUp, { loading, error }] = useMutation(SIGN_UP);
+
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -47,8 +50,18 @@ const SignUpPage = () => {
       if (error) {
         console.log(error);
       }
+
+      setSignUpData({
+        name: "",
+        username: "",
+        password: "",
+        gender: "",
+      });
+      toast.success("Account created successfully. Please login.");
+      router.push("/");
     } catch {
       console.log(error);
+      toast.error("An error occurred. Please try again.");
     }
   };
 

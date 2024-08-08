@@ -30,18 +30,16 @@ export const userResolvers = {
       try {
         const { username, name, password, gender } = input;
 
-        if (!username || !name || !password) {
-          throw new Error("Please provide all required fields");
+        if (!username || !name || !password || !gender) {
+          throw new Error("All fields are required");
         }
-
-        const userExists = users.find((user) => user.username === username);
-
-        if (userExists) {
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
           throw new Error("User already exists");
         }
 
-        const salt = bcrypt.genSaltSync();
-        const hashedPassword = bcrypt.hashSync(password, salt);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         // https://avatar-placeholder.iran.liara.run/
         const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
@@ -58,9 +56,9 @@ export const userResolvers = {
         await newUser.save();
         await context.login(newUser);
         return newUser;
-      } catch (error) {
-        console.log("Error in signUp resolver: ", error);
-        throw new Error(error);
+      } catch (err) {
+        console.error("Error in signUp: ", err);
+        throw new Error(err.message || "Internal server error");
       }
     },
 
