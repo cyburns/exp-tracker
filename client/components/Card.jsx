@@ -52,7 +52,7 @@ const Card = ({ transaction }) => {
                 onClick={handleDeleteTransaction}
               />
             )}
-            <Link href={`/transaction/123`}>
+            <Link href={`/transaction/${transaction._id}`}>
               <HiPencilAlt className="cursor-pointer" size={20} />
             </Link>
           </div>
