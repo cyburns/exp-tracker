@@ -8,6 +8,7 @@ import { MdLogout } from "react-icons/md";
 import { useMutation } from "@apollo/client";
 import { LOGOUT } from "@/graphql/mutations/user-mutations";
 import { useRouter } from "next/navigation";
+import Header from "@/components/Header";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -50,6 +51,7 @@ const HomePage = () => {
 
   return (
     <>
+      <Header />
       <div className="flex flex-col gap-6 items-center max-w-7xl mx-auto z-20 relative justify-center">
         <div className="flex justify-between w-full max-w-4xl mb-10 items-center">
           <img

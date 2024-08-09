@@ -8,19 +8,26 @@ import Link from "next/link";
 
 const categoryColorMap = {
   saving: "from-green-700 to-green-400",
-  expense: "from-pink-800 to-pink-600",
+  expense: "from-red-800 to-red-600",
   investment: "from-blue-700 to-blue-400",
   // Add more categories and corresponding color classes as needed
 };
 
-const Card = ({ cardType }) => {
-  const cardClass = categoryColorMap[cardType];
+const Card = ({ transaction }) => {
+  const { category, amount, date, location, paymentType, description } =
+    transaction;
+
+  const cardClass = categoryColorMap[category];
 
   return (
-    <div className={`rounded-md p-4 bg-gradient-to-br ${cardClass}`}>
+    <div
+      className={`rounded-md p-4 bg-gradient-to-br ${cardClass} bg-opacity-25`}
+    >
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center justify-between">
-          <h2 className="text-lg font-bold text-white">Saving</h2>
+          <h2 className="text-lg font-bold text-white capitalize">
+            {category}
+          </h2>
           <div className="flex items-center gap-2">
             <FaTrash className={"cursor-pointer"} />
             <Link href={`/transaction/123`}>
@@ -30,22 +37,28 @@ const Card = ({ cardType }) => {
         </div>
         <p className="text-white flex items-center gap-1">
           <BsCardText />
-          Description: Salary
+          Description: {description}
         </p>
         <p className="text-white flex items-center gap-1">
           <MdOutlinePayments />
-          Payment Type: Cash
+          Payment Type: {paymentType}
         </p>
         <p className="text-white flex items-center gap-1">
           <FaSackDollar />
-          Amount: $150
+          Amount: ${amount}
         </p>
         <p className="text-white flex items-center gap-1">
           <FaLocationDot />
-          Location: New York
+          Location: {location}
         </p>
         <div className="flex justify-between items-center">
-          <p className="text-xs text-black font-bold">21 Sep, 2001</p>
+          <p className="text-xs font-bold">
+            {new Date(Number(date)).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
           <img
             src={"https://tecdn.b-cdn.net/img/new/avatars/2.webp"}
             className="h-8 w-8 border rounded-full"

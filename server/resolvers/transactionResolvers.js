@@ -3,7 +3,7 @@ import Transaction from "../db/models/transaction.js";
 
 export const transactionResolver = {
   Query: {
-    transactions: async (_, __, context) => {
+    getTransactions: async (_, __, context) => {
       try {
         if (!context.getUser()) throw new Error("Unauthorized");
         const userId = await context.getUser()._id;
@@ -16,7 +16,7 @@ export const transactionResolver = {
       }
     },
 
-    transaction: async (_, { transactionId }) => {
+    getTransaction: async (_, { transactionId }) => {
       try {
         const transaction = await Transaction.findById(transactionId);
         return transaction;
@@ -26,7 +26,7 @@ export const transactionResolver = {
       }
     },
 
-    categoryStatistics: async (_, __, context) => {
+    getCategoryStatistics: async (_, __, context) => {
       if (!context.getUser()) throw new Error("Unauthorized");
 
       const userId = context.getUser()._id;
