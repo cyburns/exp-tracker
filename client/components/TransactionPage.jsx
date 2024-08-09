@@ -1,6 +1,10 @@
 "use client";
 
+import { UPDATE_TRANSACTION } from "@/graphql/mutations/transaction-mutations";
+import { GET_SINGLE_TRANSACTION } from "@/graphql/queries/transaction-queries";
+import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const TransactionPage = ({ id }) => {
   const [formData, setFormData] = useState({
@@ -12,9 +16,48 @@ const TransactionPage = ({ id }) => {
     date: "",
   });
 
+  const [updateTransaction, { loading: isUpdateLoading, data }] =
+    useMutation(UPDATE_TRANSACTION);
+
+  const { loading } = useQuery(GET_SINGLE_TRANSACTION, {
+    variables: { transactionId: id },
+    onCompleted: (data) => {
+      const { description, paymentType, category, amount, location, date } =
+        data.getTransaction;
+
+      const dateReformatted = new Date(Number(date))
+        .toISOString()
+        .split("T")[0];
+
+      setFormData({
+        description,
+        paymentType,
+        category,
+        amount,
+        location,
+        date: dateReformatted,
+      });
+    },
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("formData", formData);
+
+    try {
+      await updateTransaction({
+        variables: {
+          input: {
+            transactionId: id,
+            ...formData,
+          },
+        },
+      });
+
+      toast.success("Transaction updated successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update transaction");
+    }
   };
 
   const handleInputChange = (e) => {
@@ -27,7 +70,7 @@ const TransactionPage = ({ id }) => {
 
   return (
     <div className="h-screen max-w-4xl mx-auto flex flex-col items-center justify-center">
-      <p className="md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r from-pink-600 via-indigo-500 to-pink-400 inline-block text-transparent bg-clip-text">
+      <p className="md:text-4xl text-2xl lg:text-4xl font-light mb-10 text-center relative z-50">
         Update this transaction
       </p>
       <form
@@ -180,11 +223,11 @@ const TransactionPage = ({ id }) => {
         </div>
         {/* SUBMIT BUTTON */}
         <button
-          className="text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br
-          from-pink-500 to-pink-500 hover:from-pink-600 hover:to-pink-600"
+          className="text-white font-bold w-full rounded px-4 py-2 bg-blue-500 hover:bg-blue-400 transition mt-7"
           type="submit"
+          disabled={loading}
         >
-          Update Transaction
+          {loading ? "Loading" : "Update Transaction"}
         </button>
       </form>
     </div>

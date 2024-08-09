@@ -13,7 +13,7 @@ export const transactionTypeDefs = `#graphql
 
   type Query {
     getTransactions: [Transaction!]
-    getTransaction(transactionId:ID!): Transaction
+    getTransaction(transactionId: ID!): Transaction!
     getCategoryStatistics: [CategoryStatistics!]
   }
 

@@ -57,23 +57,22 @@ const Card = ({ transaction }) => {
             </Link>
           </div>
         </div>
-        <p className="text-white flex items-center gap-1">
+        <p className="text-white flex items-center gap-3">
           <BsCardText />
-          Description: {description}
+          {description}
         </p>
-        <p className="text-white flex items-center gap-1 capitalize">
+        <p className="text-white flex items-center gap-3 capitalize">
           <MdOutlinePayments />
-          Payment Type: {paymentType}
+          {paymentType}
         </p>
-        <p className="text-white flex items-center gap-1">
-          <FaSackDollar />
-          Amount: ${amount}
+        <p className="text-white flex items-center gap-3">
+          <FaSackDollar />${amount}
         </p>
-        <p className="text-white flex items-center gap-1">
+        <p className="text-white flex items-center gap-3">
           <FaLocationDot />
-          Location: {location}
+          {location}
         </p>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mt-7">
           <p className="text-xs font-bold">
             {new Date(Number(date)).toLocaleDateString("en-US", {
               year: "numeric",

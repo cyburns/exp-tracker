@@ -13,3 +13,17 @@ export const GET_TRANSACTIONS = gql`
     }
   }
 `;
+
+export const GET_SINGLE_TRANSACTION = gql`
+  query getTransaction($transactionId: ID!) {
+    getTransaction(transactionId: $transactionId) {
+      _id
+      description
+      paymentType
+      category
+      amount
+      location
+      date
+    }
+  }
+`;

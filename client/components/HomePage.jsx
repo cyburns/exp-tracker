@@ -20,19 +20,14 @@ const HomePage = () => {
         label: "%",
         data: [13, 8, 3],
         backgroundColor: [
-          "rgba(75, 192, 192)",
-          "rgba(255, 99, 132)",
-          "rgba(54, 162, 235)",
+          "#16803d", //saving
+          "#dc2626", //expense
+          "#3b82f7", //investment
         ],
-        borderColor: [
-          "rgba(75, 192, 192)",
-          "rgba(255, 99, 132)",
-          "rgba(54, 162, 235, 1)",
-        ],
-        borderWidth: 1,
-        borderRadius: 30,
+        borderWidth: 0,
+        borderRadius: 5,
         spacing: 10,
-        cutout: 130,
+        cutout: 120,
       },
     ],
   };
