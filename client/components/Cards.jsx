@@ -11,6 +11,8 @@ const Cards = () => {
     const getTransactionData = () => {
       try {
         getTransactions();
+
+        console.log(data);
       } catch (error) {
         console.error(error);
         setError("Error getting transactions");
@@ -31,7 +33,7 @@ const Cards = () => {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          data?.transactions?.map((transaction) => (
+          data?.getTransactions?.map((transaction) => (
             <Card
               key={transaction._id}
               transaction={transaction}

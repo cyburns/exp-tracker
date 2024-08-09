@@ -86,6 +86,7 @@ export const transactionResolver = {
         const deletedTransaction = await Transaction.findByIdAndDelete(
           transactionId
         );
+
         return deletedTransaction;
       } catch (error) {
         console.error("Error deleting transaction:", error);
