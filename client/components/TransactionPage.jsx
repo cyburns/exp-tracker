@@ -5,8 +5,10 @@ import { GET_SINGLE_TRANSACTION } from "@/graphql/queries/transaction-queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const TransactionPage = ({ id }) => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     description: "",
     paymentType: "",
@@ -43,17 +45,21 @@ const TransactionPage = ({ id }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const amount = parseFloat(formData.amount);
+
     try {
       await updateTransaction({
         variables: {
           input: {
             transactionId: id,
             ...formData,
+            amount,
           },
         },
       });
 
       toast.success("Transaction updated successfully");
+      navigationBackHome();
     } catch (error) {
       console.error(error);
       toast.error("Failed to update transaction");
@@ -66,6 +72,12 @@ const TransactionPage = ({ id }) => {
       ...prevFormData,
       [name]: value,
     }));
+  };
+
+  const navigationBackHome = () => {
+    setTimeout(() => {
+      router.push("/");
+    }, 750);
   };
 
   return (
@@ -225,7 +237,7 @@ const TransactionPage = ({ id }) => {
         <button
           className="text-white font-bold w-full rounded px-4 py-2 bg-blue-500 hover:bg-blue-400 transition mt-7"
           type="submit"
-          disabled={loading}
+          disabled={loading || isUpdateLoading}
         >
           {loading ? "Loading" : "Update Transaction"}
         </button>
